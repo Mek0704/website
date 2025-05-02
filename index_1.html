@@ -231,7 +231,7 @@
 
     try {
       // 1) Kütüphanedeki oyunlar
-      const libRes = await fetch(`https://website-urld.onrender.com/getLibrary?email=${email}`);
+      const libRes = await fetch(`/getLibrary?email=${email}`);
       const games = await libRes.json();
 
       // 2) playtime kayıtları
