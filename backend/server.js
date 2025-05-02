@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
+const path    = require('path');
 
 const app = express();
 app.use(cors());
@@ -14,7 +14,6 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0.9apmgon.mongodb.net/ali?ret
     useUnifiedTopology: true
 }).then(() => console.log('✅ MongoDB Bağlantısı Başarılı'))
   .catch(err => console.error('❌ MongoDB Bağlantı Hatası:', err));
-  const path = require('path');
   app.use('/images', express.static(path.join(__dirname, 'resim')));
 
   // Oyun şeması
