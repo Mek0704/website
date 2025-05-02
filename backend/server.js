@@ -83,7 +83,13 @@ app.post('/login', async (req, res) => {
     
   });
   
-
+  app.get('/getLibrary', async (req, res) => {
+    const email = req.query.email;
+    const user  = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Kullanıcı bulunamadı" });
+    const games = await Game.find({ _id: { $in: user.library } });
+    res.json(games);
+  });
   
 
   
@@ -307,7 +313,7 @@ app.delete('/deleteUser', async (req, res) => {
   }
 });
   
-  app.use(express.static(path.join(__dirname, '../')));
+app.use(express.static(path.join(__dirname, '../')));
 
 
  const PORT = process.env.PORT || 3000;
