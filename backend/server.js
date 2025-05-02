@@ -14,7 +14,7 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0.9apmgon.mongodb.net/ali?ret
     useUnifiedTopology: true
 }).then(() => console.log('✅ MongoDB Bağlantısı Başarılı'))
   .catch(err => console.error('❌ MongoDB Bağlantı Hatası:', err));
-  app.use('/images', express.static(path.join(__dirname, 'resim')));
+  app.use(express.static(path.join(__dirname, '../')));
 
   // Oyun şeması
   const UserGameSchema = new mongoose.Schema({
@@ -64,7 +64,8 @@ app.post('/login', async (req, res) => {
   
     res.json({ message: "Giriş başarılı" });
   });
-  app.get('/getLibrary', async (req, res) => {
+  app.get('/', async (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
     const email = req.query.email;
     const user = await User.findOne({ email });
   
@@ -79,6 +80,7 @@ app.post('/login', async (req, res) => {
     description: String,
     image: String,
     rating: { type: Number, default: 0 }
+    
   });
   
 
