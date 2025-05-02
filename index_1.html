@@ -204,7 +204,7 @@
   if (!selectedGameId) return;
   const email = localStorage.getItem("userEmail");
   try {
-    const res = await fetch("http://localhost:3000/playGame", {
+    const res = await fetch("https://website-urld.onrender.com/playGame", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -231,11 +231,11 @@
 
     try {
       // 1) Kütüphanedeki oyunlar
-      const libRes = await fetch(`http://localhost:3000/getLibrary?email=${email}`);
+      const libRes = await fetch(`https://website-urld.onrender.com/getLibrary?email=${email}`);
       const games = await libRes.json();
 
       // 2) playtime kayıtları
-      const ugRes = await fetch(`http://localhost:3000/userGames?email=${email}`);
+      const ugRes = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
       const userGames = await ugRes.json();
 
       // 3) ID → playtime map
@@ -287,7 +287,7 @@
     const email = localStorage.getItem("userEmail");
     let playtime = 0;
     if (email) {
-      const res = await fetch(`http://localhost:3000/userGames?email=${email}`);
+      const res = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
       if (res.ok) {
         const userGames = await res.json();
         // gameId._id veya direkt gameId olabilir
@@ -299,7 +299,7 @@
       }
     }
     document.getElementById("modalPlaytime").textContent = playtime;
-    const ratingRes = await fetch(`http://localhost:3000/getGameById?gameId=${selectedGameId}`);
+    const ratingRes = await fetch(`https://website-urld.onrender.com/getGameById?gameId=${selectedGameId}`);
     const freshGame = await ratingRes.json();
     document.getElementById("modalRating").textContent = freshGame.rating?.toFixed(1) || '0';
     document.getElementById("gameModal").classList.add("show");
@@ -327,7 +327,7 @@ function closeModal() {
             return;
           }
       
-          const res = await fetch("http://localhost:3000/addComment", {
+          const res = await fetch("https://website-urld.onrender.com/addComment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ gameId: selectedGameId, email, comment, rating })
@@ -338,7 +338,7 @@ function closeModal() {
             document.getElementById("comment").value = "";
             document.getElementById("rating").value = "";
             // Yeni rating'i göster
-            const updatedRes = await fetch(`http://localhost:3000/getGameById?gameId=${selectedGameId}`);
+            const updatedRes = await fetch(`https://website-urld.onrender.com/getGameById?gameId=${selectedGameId}`);
             const updatedGame = await updatedRes.json();
             document.getElementById("modalRating").textContent = updatedGame.rating || 0;
             loadComments(selectedGameId);
@@ -352,7 +352,7 @@ function closeModal() {
         }
       
         async function loadComments(gameId) {
-          const res = await fetch(`http://localhost:3000/getComments?gameId=${gameId}`);
+          const res = await fetch(`https://website-urld.onrender.com/getComments?gameId=${gameId}`);
           const data = await res.json();
           const commentsUl = document.getElementById("commentsUl");
           commentsUl.innerHTML = "";

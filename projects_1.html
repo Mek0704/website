@@ -286,7 +286,7 @@
                 }
                 async function loadAllGames() {
     try {
-      const res = await fetch("http://localhost:3000/games");
+      const res = await fetch("https://website-urld.onrender.com/games");
       const games = await res.json();
       allGames = games;
       renderFilterButtons(games);
@@ -304,7 +304,7 @@
                   }
             
                   try {
-                    const res = await fetch("http://localhost:3000/addToLibrary", {
+                    const res = await fetch("https://website-urld.onrender.com/addToLibrary", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ email, gameId })
@@ -331,7 +331,7 @@
                 if (!onay) return;
 
                 try {
-                const res = await fetch("http://localhost:3000/removeFromLibrary", {
+                const res = await fetch("https://website-urld.onrender.com/removeFromLibrary", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, gameId })
