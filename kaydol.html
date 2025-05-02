@@ -1,0 +1,132 @@
+<!-- kaydol.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kayıt Ol</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .login-container {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--light-color);
+    }
+    .login-form {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      box-shadow: var(--box-shadow);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 0.8s ease forwards;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: var(--dark-color);
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--light-text);
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <h1><a href="index.html">Proje</a></h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html" >Home Page</a></li>
+          <li><a href="projects.html">Games</a></li>
+          <li><a href="giris.html">User</a></li>
+          <li><a href="kaydol.html"class="active">Sign up</a></li>
+          <li><a href="giris.html">Sign in</a></li>
+        </ul>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="login-container">
+    <form class="login-form" onsubmit="register(event)">
+      <h2 class="section-title">Kayıt Ol</h2>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required placeholder="example@mail.com" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Password" />
+      </div>
+      <div class="form-group">
+        <label for="password2">Password(Again)</label>
+        <input type="password" id="password2" name="password2" required placeholder="Password" />
+      </div>
+      <div class="center-btn">
+        <button type="submit" class="btn primary-btn">Sign up</button>
+      </div>
+      <center><p class="toggle-link">Already members? <a href="giris.html">Sign in</a></p></center>
+    </form>
+  </div>
+
+  <!-- ✔️ JavaScript kısmı -->
+  <script>
+    async function register(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const password2 = document.getElementById('password2').value;
+
+      if (password !== password2) {
+        alert("❌ Şifreler uyuşmuyor!");
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000/addUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("✅ " + result.message);
+          window.location.href = "giris.html";
+        } else {
+          alert("❌ " + result.message);
+        }
+
+      } catch (error) {
+        alert("⚠️ Sunucuya bağlanılamadı!");
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>

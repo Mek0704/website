@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Projeler sayfası için ek stiller */
+        .projects-section {
+            padding: 120px 0 80px;
+        }
+        
+        .projects-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .projects-header h1 {
+            font-size: 3rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+        }
+        
+        .projects-header p {
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .project-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 20px;
+            margin: 0 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            color: var(--text-color);
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .project-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .project-image {
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .project-item:hover .project-image img {
+            transform: scale(1.1);
+        }
+        
+        .project-details {
+            padding: 25px;
+        }
+        
+        .project-details h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .project-details p {
+            color: var(--light-text);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .project-category {
+            background-color: #e5edff;
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .project-date {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .project-tags span {
+            background-color: #f3f4f6;
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .project-links a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .project-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .project-detail-section {
+            padding: 40px 0;
+        }
+        
+        .project-detail-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        @media (max-width: 768px) {
+            .projects-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .projects-header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><a href="index.html">Proje</a></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index_1.html" >Home Page</a></li>
+                    <li><a href="projects_1.html" class="active">Games</a></li>
+                    <li><a href="user_1.html">User</a></li>
+                    <li><a href="index_1.html">Quit</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="projects-section">
+        <div class="container">
+            <div class="projects-header">
+                <h1 class="fade-in">Games</h1>
+                <div id="filter-container" class="project-filter"></div>
+                <p class="fade-in-delay"></p>
+            </div>
+                <div class="container">
+                    <!-- Oyunlar buraya dinamik olarak eklenecek -->
+                  </div>
+                </div>
+                <div class="projects-container" id="all-games-container"></div>
+              </section>
+            
+              <!-- ✅ JavaScript kısmı (sayfa sonu) -->
+              <script>
+              let allGames = [];
+
+                // 2) Oyun kartlarını oluşturup ekleyecek fonksiyon
+                function displayGames(games) {
+                const container = document.getElementById("all-games-container");
+                container.innerHTML = "";
+                games.forEach(game => {
+      const card = document.createElement("div");
+      card.className = "project-item web ui fade-in";
+
+      card.innerHTML = `
+        <div class="project-image">
+          <img src="${game.image}" alt="${game.title}">
+        </div>
+        <div class="project-details">
+          <div class="project-meta" style="display:flex; align-items:center;">
+            <span class="project-category">${game.genre}</span>
+            <!-- ★ Ortalama rating burada -->
+            <span class="project-rating">
+              <i class="fa fa-star"></i> ${game.rating?.toFixed(1) || '0.0'}/5
+            </span>
+          </div>
+          <h3>${game.title}</h3>
+          <p>${game.description}</p>
+          <div class="project-tags">
+            <span>${game.genre}</span>
+          </div>
+          <div class="project-links">
+            <div style="margin: 10px 0;">
+              <button onclick="addToLibrary('${game._id}')" class="btn primary-btn">Kütüphaneye Ekle</button>
+              <button onclick="removeFromLibrary('${game._id}')" class="btn primary-btn" style="background-color: #dc3545;">Kütüphaneden Kaldır</button>
+            </div>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+                }
+              
+                // 3) Tür butonlarını dinamik oluşturacak ve tıklamaya göre filtreleyecek fonksiyon
+                function renderFilterButtons(games) {
+                  const filterContainer = document.getElementById("filter-container");
+                  filterContainer.innerHTML = "";
+                  // benzersiz türleri al
+                  const genres = [...new Set(games.map(g => g.genre))];
+                  // isterseniz Hepsi butonu ekleyin
+                  genres.unshift("Hepsi");
+              
+                  genres.forEach(genre => {
+                    const btn = document.createElement("button");
+                    btn.textContent = genre;
+                    btn.className = "filter-btn";
+                    if (genre === "Hepsi") btn.classList.add("active");
+              
+                    btn.addEventListener("click", () => {
+                      // buton aktifliğini güncelle
+                      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                      btn.classList.add("active");
+                      // filtre uygula
+                      const filtered = genre === "Hepsi"
+                        ? allGames
+                        : allGames.filter(g => g.genre === genre);
+                      displayGames(filtered);
+                    });
+              
+                    filterContainer.appendChild(btn);
+                  });
+                }
+                async function loadAllGames() {
+    try {
+      const res = await fetch("http://localhost:3000/games");
+      const games = await res.json();
+      allGames = games;
+      renderFilterButtons(games);
+      displayGames(games);
+    } catch (err) {
+      console.error("Oyunlar yüklenemedi", err);
+    }
+  }
+            
+                async function addToLibrary(gameId) {
+                  const email = localStorage.getItem("userEmail");
+                  if (!email) {
+                    alert("Lütfen önce giriş yapın.");
+                    return;
+                  }
+            
+                  try {
+                    const res = await fetch("http://localhost:3000/addToLibrary", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email, gameId })
+                    });
+            
+                    const result = await res.json();
+                    alert(result.message);
+                  } catch (err) {
+                    alert("Oyun eklenemedi.");
+                    console.error(err);
+                  }
+                }
+            
+                window.onload = loadAllGames;
+
+                async function removeFromLibrary(gameId) {
+                const email = localStorage.getItem("userEmail");
+                if (!email) {
+                alert("Lütfen önce giriş yapın.");
+                return;
+                }
+
+                const onay = confirm("Bu oyunu kütüphaneden kaldırmak istediğinize emin misiniz?");
+                if (!onay) return;
+
+                try {
+                const res = await fetch("http://localhost:3000/removeFromLibrary", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, gameId })
+                });
+
+                const result = await res.json();
+                if (result.success) {
+                alert("✅ Başarıyla kaldırıldı.");
+                location.reload();
+                } else {
+                alert("⚠️ " + (result.message || "Kaldırılamadı."));
+                }
+                } catch (err) {
+                alert("❌ Bir hata oluştu.");
+                console.error(err);
+             }
+                }          
+        </script>
+</body>
+</html>

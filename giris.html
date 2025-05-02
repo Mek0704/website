@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Giriş Yap</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .login-container {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--light-color);
+    }
+    .login-form {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      box-shadow: var(--box-shadow);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 0.8s ease forwards;
+    }
+    .login-form .form-group {
+      margin-bottom: 20px;
+    }
+    .login-form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: var(--dark-color);
+    }
+    .login-form input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--light-text);
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    .login-form input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <h1><a href="index.html">Proje</a></h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index_1.html">Home Page</a></li>
+          <li><a href="projects.html">Games</a></li>
+          <li><a href="giris.html">User</a></li>
+          <li><a href="kaydol.html">Sign up</a></li>
+          <li><a href="giris.html" class="active">Sign in</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="login-container">
+    <form class="login-form" onsubmit="login(event)">
+      <h2 class="section-title">Giriş Yap</h2>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required placeholder="example@mail.com" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Password" />
+      </div>
+      <div class="center-btn">
+        <button type="submit" class="btn primary-btn">Sign in</button>
+      </div>
+      <center><p class="toggle-link">Do you want to sign up? <a href="kaydol.html">Sign up</a></p></center>
+    </form>
+  </div>
+
+  <script>
+    const API_URL ="https://website-823bb.web.app"
+    async function login(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          window.location.href = "index_1.html";
+          localStorage.setItem("userEmail", email); 
+          window.location.href = "index_1.html";  
+
+        } else {
+          alert("❌ " + result.message);
+        }
+
+      } catch (err) {
+        alert("⚠️ Sunucuya bağlanılamadı!");
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
