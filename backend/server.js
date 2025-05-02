@@ -14,7 +14,7 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0.9apmgon.mongodb.net/ali?ret
     useUnifiedTopology: true
 }).then(() => console.log('✅ MongoDB Bağlantısı Başarılı'))
   .catch(err => console.error('❌ MongoDB Bağlantı Hatası:', err));
-  app.use(express.static(path.join(__dirname, '../')));
+  
 
   // Oyun şeması
   const UserGameSchema = new mongoose.Schema({
@@ -65,7 +65,6 @@ app.post('/login', async (req, res) => {
     res.json({ message: "Giriş başarılı" });
   });
   app.get('/', async (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
     const email = req.query.email;
     const user = await User.findOne({ email });
   
@@ -73,6 +72,7 @@ app.post('/login', async (req, res) => {
   
     const games = await Game.find({ _id: { $in: user.library } });
     res.json(games);
+    res.sendFile(path.join(__dirname, '../index.html'));
   });
   const Game = mongoose.model("Game", {
     title: String,
@@ -83,10 +83,21 @@ app.post('/login', async (req, res) => {
     
   });
   
-
+  app.get('/getLibrary', async (req, res) => {
+    try {
+      const email = req.query.email;
+      if (!email) return res.status(400).json({ message: "Eksik parametre: email" });
   
-
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: "Kullanıcı bulunamadı" });
   
+      const games = await Game.find({ _id: { $in: user.library } });
+      return res.json(games);
+    } catch (err) {
+      console.error("getLibrary hatası:", err);
+      return res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
   
   
   // Tüm oyunları ver
@@ -307,7 +318,7 @@ app.delete('/deleteUser', async (req, res) => {
   }
 });
   
-  
+app.use(express.static(path.join(__dirname, '../')));
 
 
  const PORT = process.env.PORT || 3000;
