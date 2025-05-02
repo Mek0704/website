@@ -83,21 +83,10 @@ app.post('/login', async (req, res) => {
     
   });
   
-  app.get('/getLibrary', async (req, res) => {
-    try {
-      const email = req.query.email;
-      if (!email) return res.status(400).json({ message: "Eksik parametre: email" });
+
   
-      const user = await User.findOne({ email });
-      if (!user) return res.status(404).json({ message: "Kullanıcı bulunamadı" });
+
   
-      const games = await Game.find({ _id: { $in: user.library } });
-      return res.json(games);
-    } catch (err) {
-      console.error("getLibrary hatası:", err);
-      return res.status(500).json({ message: "Sunucu hatası" });
-    }
-  });
   
   
   // Tüm oyunları ver
@@ -318,7 +307,7 @@ app.delete('/deleteUser', async (req, res) => {
   }
 });
   
-app.use(express.static(path.join(__dirname, '../')));
+  app.use(express.static(path.join(__dirname, '../')));
 
 
  const PORT = process.env.PORT || 3000;

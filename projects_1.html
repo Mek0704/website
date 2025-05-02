@@ -304,7 +304,7 @@
                   }
             
                   try {
-                    const res = await fetch("/addToLibrary", {
+                    const res = await fetch("https://website-urld.onrender.com/addToLibrary", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ email, gameId })
@@ -331,7 +331,7 @@
                 if (!onay) return;
 
                 try {
-                const res = await fetch("/removeFromLibrary", {
+                const res = await fetch("https://website-urld.onrender.com/removeFromLibrary", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, gameId })

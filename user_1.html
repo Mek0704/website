@@ -93,7 +93,7 @@
           if (!onay) return;
       
           try {
-            const res = await fetch("/deleteUser", {
+            const res = await fetch("https://website-urld.onrender.com/deleteUser", {
               method: "DELETE",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email })
@@ -120,7 +120,7 @@
     if (!email) return;
 
     try {
-      const res = await fetch(`/userGames?email=${email}`);
+      const res = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
       if (!res.ok) return;
       const userGames = await res.json();
 
