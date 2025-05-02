@@ -282,7 +282,7 @@
                   }
                   async function loadAllGames() {
       try {
-        const res = await fetch("https://website-urld.onrender.com/games");
+        const res = await fetch("/games");
         const games = await res.json();
         allGames = games;
         renderFilterButtons(games);
