@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="hero-image fade-in">
-                <img src="anasayfa.jpeg" alt="Profil Resmi">
+                <img src="images/anasayfa.jpg" alt="Profil Resmi">
             </div>
         </div>
     </section>
@@ -257,7 +257,6 @@
         const card = document.createElement("div");
         card.className = "skill fade-in";
         card.onclick = () => showGameModal(game);
-        games.sort();
         card.innerHTML = `
           <h3>${game.title}</h3>
           <p>${game.genre}</p>
@@ -336,15 +335,17 @@ function closeModal() {
       
           if (res.ok) {
             alert("Yorum eklendi!");
+            await loadMyGames(); 
+            loadComments(selectedGameId);
             document.getElementById("comment").value = "";
             document.getElementById("rating").value = "";
             // Yeni rating'i göster
             const updatedRes = await fetch(`https://website-urld.onrender.com/getGameById?gameId=${selectedGameId}`);
             const updatedGame = await updatedRes.json();
             document.getElementById("modalRating").textContent = updatedGame.rating || 0;
+            await loadMyGames();
             loadComments(selectedGameId);
-            game.sort();
-            loadMyGames();
+            
       
             
           } else {
