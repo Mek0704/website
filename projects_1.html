@@ -223,36 +223,36 @@
                 const container = document.getElementById("all-games-container");
                 container.innerHTML = "";
                 games.forEach(game => {
-      const card = document.createElement("div");
-      card.className = "project-item web ui fade-in";
+                const card = document.createElement("div");
+                card.className = "project-item web ui fade-in";
 
-      card.innerHTML = `
-        <div class="project-image">
-          <img src="${game.image}" alt="${game.title}">
-        </div>
-        <div class="project-details">
-          <div class="project-meta" style="display:flex; align-items:center;">
-            <span class="project-category">${game.genre}</span>
-            <!-- ★ Ortalama rating burada -->
-            <span class="project-rating">
-              <i class="fa fa-star"></i> ${game.rating?.toFixed(1) || '0.0'}/5
-            </span>
-          </div>
-          <h3>${game.title}</h3>
-          <p>${game.description}</p>
-          <div class="project-tags">
-            <span>${game.genre}</span>
-          </div>
-          <div class="project-links">
-            <div style="margin: 10px 0;">
-              <button onclick="addToLibrary('${game._id}')" class="btn primary-btn">Kütüphaneye Ekle</button>
-              <button onclick="removeFromLibrary('${game._id}')" class="btn primary-btn" style="background-color: #dc3545;">Kütüphaneden Kaldır</button>
-            </div>
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
+                card.innerHTML = `
+                <div class="project-image">
+                <img src="${game.image}" alt="${game.title}">
+                </div>
+                <div class="project-details">
+                <div class="project-meta" style="display:flex; align-items:center;">
+                <span class="project-category">${game.genre}</span>
+                <!-- ★ Ortalama rating burada -->
+                <span class="project-rating">
+                <i class="fa fa-star"></i> ${game.rating?.toFixed(1) || '0.0'}/5
+                </span>
+                </div>
+                <h3>${game.title}</h3>
+                <p>${game.description}</p>
+                <div class="project-tags">
+                <span>${game.genre}</span>
+                </div>
+                <div class="project-links">
+                <div style="margin: 10px 0;">
+                <button onclick="addToLibrary('${game._id}')" class="btn primary-btn">Kütüphaneye Ekle</button>
+                <button onclick="removeFromLibrary('${game._id}')" class="btn primary-btn" style="background-color: #dc3545;">Kütüphaneden Kaldır</button>
+                </div>
+                </div>
+                </div>
+                `;
+                container.appendChild(card);
+                });
                 }
               
                 // 3) Tür butonlarını dinamik oluşturacak ve tıklamaya göre filtreleyecek fonksiyon
@@ -261,7 +261,6 @@
                   filterContainer.innerHTML = "";
                   // benzersiz türleri al
                   const genres = [...new Set(games.map(g => g.genre))];
-                  // isterseniz Hepsi butonu ekleyin
                   genres.unshift("Hepsi");
               
                   genres.forEach(genre => {
@@ -285,17 +284,17 @@
                   });
                 }
                 async function loadAllGames() {
-    try {
-      const res = await fetch("https://website-urld.onrender.com/games");
-      const games = await res.json();
-      allGames = games;
-      renderFilterButtons(games);
-      displayGames(games);
-    } catch (err) {
-      console.error("Oyunlar yüklenemedi", err);
-    }
-  }
-            
+                try {
+                const res = await fetch("https://website-urld.onrender.com/games");
+                const games = await res.json();
+                allGames = games;
+                renderFilterButtons(games);
+                displayGames(games);
+                } catch (err) {
+                console.error("Oyunlar yüklenemedi", err);
+                }
+            }   
+              // 4) Kütüphaneye ekleme fonksiyonu
                 async function addToLibrary(gameId) {
                   const email = localStorage.getItem("userEmail");
                   if (!email) {

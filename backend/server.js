@@ -34,6 +34,7 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0.9apmgon.mongodb.net/ali?ret
 const User = mongoose.model('User', {
     email: String,
     password: String,
+    username: { type: String, default: 'User' },
     library: [String]
 });
 
@@ -90,9 +91,6 @@ app.post('/login', async (req, res) => {
     const games = await Game.find({ _id: { $in: user.library } });
     res.json(games);
   });
-  
-
-  
   
   
   // Tüm oyunları ver
@@ -273,6 +271,27 @@ app.post('/addComment', async (req, res) => {
     res.json(userGames);
   });
 
+// Kullanıcı bilgisi GET (username çekmek için)
+app.get('/getUser', async (req, res) => {
+  const { email } = req.query;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "Kullanıcı bulunamadı." });
+  res.json({ username: user.username });
+});
+
+// Kullanıcı adı güncelleme
+app.put('/updateUsername', async (req, res) => {
+  const { email, username } = req.body;
+  const user = await User.findOneAndUpdate(
+    { email },
+    { username },
+    { new: true }
+  );
+  if (!user) return res.status(404).json({ message: "Kullanıcı bulunamadı." });
+  res.json({ message: "Kullanıcı adı güncellendi.", username: user.username });
+});
+
+  
   //silme işlemi
 app.delete('/deleteUser', async (req, res) => {
   try {

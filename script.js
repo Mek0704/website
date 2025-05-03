@@ -82,26 +82,6 @@ function setupTestimonialSlider() {
 window.addEventListener('load', setupTestimonialSlider);
 window.addEventListener('resize', setupTestimonialSlider);
 
-// Form gönderimi işlevi (iletişim sayfası için)
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Form verilerini al
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
-        
-        // Burada normalde bir API'ye istek gönderilebilir
-        // Bu demo için sadece bir alert gösterelim
-        alert(`Teşekkürler ${name}! Mesajınız alındı. En kısa sürede size dönüş yapacağız.`);
-        
-        // Formu temizle
-        this.reset();
-    });
-}
-
 // Proje filtresi - projeler sayfası için
 const filterButtons = document.querySelectorAll('.filter-btn');
 const projectItems = document.querySelectorAll('.project-item');
@@ -153,20 +133,6 @@ if (typeElement) {
             clearInterval(typeInterval);
         }
     }, 100);
-}
-
-// İletişim formunda girdi doğrulama
-const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
-if (formInputs.length > 0) {
-    formInputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            if (this.value.trim() !== '') {
-                this.classList.add('has-value');
-            } else {
-                this.classList.remove('has-value');
-            }
-        });
-    });
 }
 
 // Sayfa yukarı kaydırma butonu
