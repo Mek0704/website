@@ -93,11 +93,34 @@ app.post('/login', async (req, res) => {
   });
   
   
-  // Tüm oyunları ver
-  app.get('/games', async (req, res) => {
-    const games = await Game.find();
+  // Tüm oyunları ve toplam playtime’ı ver
+app.get('/games', async (req, res) => {
+  try {
+    const games = await Game.aggregate([
+      {
+        $lookup: {
+          from: 'usergames',
+          localField: '_id',
+          foreignField: 'gameId',
+          as: 'plays'
+        }
+      },
+      {
+        $addFields: {
+          totalPlaytime: { $sum: '$plays.playtime' }
+        }
+      },
+      {
+        $project: { plays: 0 }
+      }
+    ]);
     res.json(games);
-  });
+  } catch (err) {
+    console.error('games aggregate hatası:', err);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
   
   // Kullanıcıya oyun ekle
   app.post('/addToLibrary', async (req, res) => {
