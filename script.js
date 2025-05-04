@@ -14,11 +14,6 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Hamburger menü fonksiyonu
-hamburger.addEventListener('click', function() {
-    this.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
 
 // Mobil menüyü kapatma - link tıklaması
 const navLinks = document.querySelectorAll('nav ul li a');
