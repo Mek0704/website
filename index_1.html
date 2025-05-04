@@ -258,8 +258,6 @@ async function refreshComments() {
     const ug = await res.json();
     document.getElementById("modalPlaytime").textContent = ug.playtime || 0;
     alert("Tebrikler! 1 saat oyun süresi eklendi.");
-    if (typeof refreshStats === "function") await refreshStats();
-    if (typeof refreshComments === "function") await refreshComments();
   } catch (err) {
     console.error("playGame fetch hatası:", err);
     alert("Oyun süresi güncellenemedi.");
