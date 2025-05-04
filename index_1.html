@@ -318,6 +318,11 @@ function closeModal() {
       <script>
         async function submitComment(event) {
           event.preventDefault();
+          const playtime = parseInt(document.getElementById("modalPlaytime").textContent) || 0;
+          if (playtime < 1) {
+          alert("Yorum yapabilmek için bu oyunda en az 1 saat oynamalısınız.");
+          return;
+          }
           const email = localStorage.getItem("userEmail");
           const comment = document.getElementById("comment").value;
           const rating = document.getElementById("rating").value;
