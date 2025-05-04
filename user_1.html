@@ -138,6 +138,19 @@
               </section>
           
         </div>
+
+        <!-- ——— Yorumlar Bölümü ——— -->
+        <section class="comments-section" style="max-width:800px; margin:0 auto; padding:2rem 0;">
+        <h3 style="color:#2c3e50; font-size:1.5rem; margin-bottom:1rem;">Yorumlar</h3>
+        <div id="commentsContainer" style="display:flex; flex-direction:column; gap:1rem;">
+         
+        </div>
+        </section>
+
+
+
+
+
       </section>
       <div style="text-align: center; margin-bottom: 50px;">
         <a href="projects_1.html" class="btn primary-btn">Oyunlara Bak</a>
@@ -261,6 +274,46 @@ document.addEventListener('DOMContentLoaded', async () => {
   </script>
 
       </script>
+
+
+      <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+          const email = localStorage.getItem('userEmail');
+          if (!email) return;
+        
+          const res = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
+          if (!res.ok) return;
+          const userGames = await res.json();
+        
+          const commented = userGames
+            .filter(ug => ug.comment && ug.comment.trim() !== '')
+            .sort((a, b) => b.playtime - a.playtime);
+        
+          const container = document.getElementById('commentsContainer');
+          if (commented.length === 0) {
+            container.innerHTML = '<p style="color:#7f8c8d;">Henüz bir yorum yapılmamış.</p>';
+            return;
+          }
+        
+          
+          commented.forEach(ug => {
+            const card = document.createElement('div');
+            card.style.padding = '1rem';
+            card.style.border = '1px solid #ddd';
+            card.style.borderRadius = '0.5rem';
+            card.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+            card.innerHTML = `
+              <strong style="font-size:1.1rem;">${ug.gameId.title}</strong>
+              <p style="margin:0.5rem 0;">${ug.comment}</p>
+              <small>Toplam Oynama Süresi: ${ug.playtime} saat</small>
+              <br><small>Puan: ${ug.rating || '–'}</small>
+            `;
+            container.appendChild(card);
+          });
+        });
+        </script>
+        
+        
       
          
 </body>
