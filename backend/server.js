@@ -162,6 +162,9 @@ app.get('/games', async (req, res) => {
         { $pull: { library: gameId.toString() } }  // 🔁 ObjectId değil → String olarak tut
       );
       const user = await User.findOne({ email });
+      if (user) {
+        await UserGame.deleteMany({ userId: user._id, gameId });
+      }
 
 
       if (result.modifiedCount > 0) {
@@ -290,7 +293,7 @@ app.post('/addComment', async (req, res) => {
   
     // UserGame içinde hem playtime’ı al, hem gameId üzerinden Game dokümanını populate et
     const userGames = await UserGame
-      .find({ userId: user._id, gameId: { $in: user.library } })
+      .find({ userId: user._id })
       .populate('gameId', 'title');
   
     res.json(userGames);
