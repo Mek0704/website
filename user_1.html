@@ -281,22 +281,41 @@ document.addEventListener('DOMContentLoaded', async () => {
           const email = localStorage.getItem('userEmail');
           if (!email) return;
         
+          // 1) Hepsini çek
           const res = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
           if (!res.ok) return;
           const userGames = await res.json();
         
-          const commented = userGames
-            .filter(ug => ug.comment && ug.comment.trim() !== '')
-            .sort((a, b) => b.playtime - a.playtime);
+          // 2) Oyun‑ID → toplam playtime haritası
+          const playtimeMap = {};
+          userGames.forEach(ug => {
+            const id = (ug.gameId._id || ug.gameId).toString();
+            // eğer birden fazla doküman varsa toplamak isterseniz:
+            playtimeMap[id] = (playtimeMap[id] || 0) + (Number(ug.playtime) || 0);
+          });
         
+          // 3) Yorum dökümanlarını filtrele
+          const commented = userGames.filter(ug =>
+            ug.comment && ug.comment.trim() !== ''
+          );
+        
+          // 4) Gerçek playtime’a göre sırala
+          commented.sort((a, b) => {
+            const pa = playtimeMap[a.gameId._id] || 0;
+            const pb = playtimeMap[b.gameId._id] || 0;
+            return pb - pa;
+          });
+        
+          // 5) Render
           const container = document.getElementById('commentsContainer');
+          container.innerHTML = '';
           if (commented.length === 0) {
             container.innerHTML = '<p style="color:#7f8c8d;">Henüz bir yorum yapılmamış.</p>';
             return;
           }
         
-          
           commented.forEach(ug => {
+            const hours = playtimeMap[ug.gameId._id] || 0;
             const card = document.createElement('div');
             card.style.padding = '1rem';
             card.style.border = '1px solid #ddd';
@@ -305,13 +324,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.innerHTML = `
               <strong style="font-size:1.1rem;">${ug.gameId.title}</strong>
               <p style="margin:0.5rem 0;">${ug.comment}</p>
-              <small>Toplam Oynama Süresi: ${ug.playtime} saat</small>
-              <br><small>Puan: ${ug.rating || '–'}</small>
+              <small>Toplam Oynama Süresi: ${hours} saat</small><br>
+              <small>Puan: ${ug.rating || '–'}</small>
             `;
             container.appendChild(card);
           });
         });
         </script>
+        
         
         
       
