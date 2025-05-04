@@ -284,8 +284,8 @@ async function refreshComments() {
       // 3) ID → playtime map
       const playtimeMap = {};
       userGames.forEach(ug => {
-        const id = (ug.gameId._id || ug.gameId).toString();
-        playtimeMap[id] = ug.playtime;
+      const id = (ug.gameId._id || ug.gameId).toString();
+      playtimeMap[id] = Math.max(playtimeMap[id] || 0, Number(ug.playtime) || 0);
       });
 
       // 4) **Sıralama**: en çok oynanan ilk
