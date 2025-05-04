@@ -196,6 +196,49 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+      async function refreshStats() {
+  const email = localStorage.getItem("userEmail");
+  if (!email) return;
+  const res = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
+  if (!res.ok) return;
+  const userGames = await res.json();
+  const total = userGames.map(ug => Number(ug.playtime)||0).reduce((s,x)=>s+x,0);
+  document.getElementById("totalPlaytime").innerText = total;
+  const most = userGames.reduce((m,ug)=>Number(ug.playtime)>Number(m.playtime)?ug:m, userGames[0]);
+  document.getElementById("mostPlayedGame").innerText = most.gameId.title;
+  const ratings = userGames.map(ug=>Number(ug.rating)||0).filter(r=>r>0);
+  document.getElementById("avgRating").innerText = ratings.length ? (ratings.reduce((s,r)=>s+r,0)/ratings.length).toFixed(1) : "–";
+}
+
+async function refreshComments() {
+  const email = localStorage.getItem("userEmail");
+  if (!email) return;
+  const res = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
+  if (!res.ok) return;
+  const userGames = await res.json();
+  const commented = userGames
+    .filter(ug => ug.comment && ug.comment.trim() !== "")
+    .sort((a,b)=>Number(b.playtime)-Number(a.playtime));
+  const c = document.getElementById("commentsContainer");
+  c.innerHTML = "";
+  if (!commented.length) {
+    c.innerHTML = '<p style="color:#7f8c8d;">Henüz bir yorum yapılmamış.</p>';
+    return;
+  }
+  commented.forEach(ug=>{
+    const card = document.createElement("div");
+    card.style.padding="1rem"; card.style.border="1px solid #ddd"; card.style.borderRadius=".5rem";
+    card.innerHTML = `
+      <strong>${ug.gameId.title}</strong>
+      <p>${ug.comment}</p>
+      <small>Toplam Oynama Süresi: ${ug.playtime} saat</small><br>
+      <small>Puan: ${ug.rating||'–'}</small>`;
+    c.appendChild(card);
+  });
+}
+
+    </script>
 
       <script>
 
@@ -215,6 +258,8 @@
     const ug = await res.json();
     document.getElementById("modalPlaytime").textContent = ug.playtime || 0;
     alert("Tebrikler! 1 saat oyun süresi eklendi.");
+    if (typeof refreshStats === "function") await refreshStats();
+    if (typeof refreshComments === "function") await refreshComments();
   } catch (err) {
     console.error("playGame fetch hatası:", err);
     alert("Oyun süresi güncellenemedi.");
