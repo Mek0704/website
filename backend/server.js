@@ -177,6 +177,21 @@ app.get('/games', async (req, res) => {
       res.status(500).json({ success: false, message: "Sunucu hatası oluştu." });
     }
   });
+  // projede oyunları tamamen silmek için:
+app.delete('/deleteGame', async (req, res) => {
+  try {
+    const { gameId } = req.body;
+    // 1) Game dokümanını sil
+    await Game.findByIdAndDelete(gameId);
+    // 2) O oyunla ilgili tüm UserGame kayıtlarını sil
+    await UserGame.deleteMany({ gameId: mongoose.Types.ObjectId(gameId) });
+    res.json({ success: true });
+  } catch (err) {
+    console.error("deleteGame hatası:", err);
+    res.status(500).json({ success: false, message: "Sunucu hatası." });
+  }
+});
+
   // Add comment endpoint
   // Add comment endpoint — kullanıcı istediği kadar yorum yapabilir, rating için sadece son yorum alınır
 app.post('/addComment', async (req, res) => {
