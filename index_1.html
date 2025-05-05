@@ -280,10 +280,11 @@ async function refreshComments() {
       // 2) playtime kayıtları
       const ugRes = await fetch(`https://website-urld.onrender.com/userGames?email=${email}`);
       const userGames = await ugRes.json();
+      const validUserGames = userGames.filter(ug => ug.gameId);
 
       // 3) ID → playtime map
       const playtimeMap = {};
-      userGames.forEach(ug => {
+      validUserGames.forEach(ug => {
       const id = (ug.gameId._id || ug.gameId).toString();
       playtimeMap[id] = Math.max(playtimeMap[id] || 0, Number(ug.playtime) || 0);
       });
