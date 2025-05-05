@@ -287,16 +287,17 @@ async function refreshComments() {
       const id = (ug.gameId._id || ug.gameId).toString();
       playtimeMap[id] = Math.max(playtimeMap[id] || 0, Number(ug.playtime) || 0);
       });
+      const validGames = games.filter(g => g != null);
 
       // 4) **Sıralama**: en çok oynanan ilk
-      games.sort((a, b) =>
+      validGames.sort((a, b) =>
         (playtimeMap[b._id] || 0) - (playtimeMap[a._id] || 0)
       );
 
       // 5) Render
       const container = document.getElementById("my-games-container");
       container.innerHTML = "";
-      games.forEach(game => {
+      validGames.forEach(game => {
         const card = document.createElement("div");
         card.className = "skill fade-in";
         card.onclick = () => showGameModal(game);
