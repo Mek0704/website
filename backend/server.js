@@ -236,22 +236,6 @@ app.post('/addComment', async (req, res) => {
   }
 });
 
-// Oyun ekleme endpoint’i
-app.post('/addGame', async (req, res) => {
-  try {
-    const { title, genre, description, image } = req.body;
-    if (!title || !genre || !description || !image) {
-      return res.status(400).json({ message: "Tüm alanları doldurun." });
-    }
-    const newGame = await Game.create({ title, genre, description, image });
-    res.status(201).json({ message: "Oyun başarıyla eklendi!", game: newGame });
-  } catch (err) {
-    console.error("addGame hatası:", err);
-    res.status(500).json({ message: "Sunucu hatası." });
-  }
-});
-
-
   
   // Get comments endpoint
   app.get('/getComments', async (req, res) => {
