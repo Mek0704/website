@@ -205,6 +205,10 @@
             <div class="projects-header">
                 <h1 class="fade-in">Games</h1>
                 <div id="filter-container" class="project-filter"></div>
+                <button id="add-game-btn" class="filter-btn" style="background-color: #28a745; color: #fff; margin-left:10px;">
+                    <i class="fa fa-plus"></i> Oyun Ekle
+                  </button>
+                  
                 <p class="fade-in-delay"></p>
             </div>
                 <div class="container">
@@ -351,6 +355,39 @@
                 console.error(err);
              }
                 }          
+        </script>
+
+        <script>
+            // 5) Yeni: Oyun ekleme butonunu dinle
+document.getElementById('add-game-btn').addEventListener('click', async () => {
+  const title       = prompt("Oyun başlığı:");
+  const genre       = prompt("Tür:");
+  const description = prompt("Açıklama:");
+  const image       = prompt("Resim URL:");
+  if (!title || !genre || !description || !image) {
+    alert("Tüm bilgileri girmelisiniz.");
+    return;
+  }
+
+  try {
+    const res = await fetch("https://website-urld.onrender.com/addGame", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, genre, description, image })
+    });
+    const result = await res.json();
+    if (res.ok) {
+      alert(result.message);
+      loadAllGames();    // ekledikten sonra listeyi yenile
+    } else {
+      alert("Hata: " + result.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Sunucu hatası, oyun eklenemedi.");
+  }
+});
+
         </script>
 </body>
 </html>
