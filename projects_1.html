@@ -394,14 +394,10 @@
 
         </script>
         <script>
+            //oyun silme butonu
             document.getElementById('delete-game-btn').addEventListener('click', async () => {
-            // 1) Oyunu isme göre sor
-            const title = prompt("Silmek istediğiniz oyunun başlığını girin:");
-            if (!title) return alert("Oyun başlığı boş olamaz.");
-            // 2) allGames dizisinden başlığa göre bul
-            const game = allGames.find(g => g.title.toLowerCase() === title.toLowerCase());
-            if (!game) return alert("Böyle bir başlığa sahip oyun bulunamadı.");
-            const gameId = game._id;
+            const gameId = prompt("Silmek istediğiniz oyunun _id değerini girin:");
+            if (!gameId) return alert("Oyun ID boş olamaz.");
             try {
             const res = await fetch("https://website-urld.onrender.com/deleteGame", {
             method: "DELETE",
@@ -419,7 +415,7 @@
             console.error(err);
             alert("Sunucu hatası, silme başarısız.");
             }
-            });
+        });
 
         </script>
 </body>
