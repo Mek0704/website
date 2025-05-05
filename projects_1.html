@@ -394,28 +394,32 @@
 
         </script>
         <script>
-            // projects_1.html içinde, add-game-btn listener’ından sonra
-document.getElementById('delete-game-btn').addEventListener('click', async () => {
-  const gameId = prompt("Silmek istediğiniz oyunun _id değerini girin:");
-  if (!gameId) return alert("Oyun ID boş olamaz.");
-  try {
-    const res = await fetch("https://website-urld.onrender.com/deleteGame", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ gameId })
-    });
-    const result = await res.json();
-    if (result.success) {
-      alert("Oyun silindi.");
-      loadAllGames();           // oyun listesini yenile
-    } else {
-      alert("Silinemedi: " + (result.message||""));
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Sunucu hatası, silme başarısız.");
-  }
-});
+            document.getElementById('delete-game-btn').addEventListener('click', async () => {
+            // 1) Oyunu isme göre sor
+            const title = prompt("Silmek istediğiniz oyunun başlığını girin:");
+            if (!title) return alert("Oyun başlığı boş olamaz.");
+            // 2) allGames dizisinden başlığa göre bul
+            const game = allGames.find(g => g.title.toLowerCase() === title.toLowerCase());
+            if (!game) return alert("Böyle bir başlığa sahip oyun bulunamadı.");
+            const gameId = game._id;
+            try {
+            const res = await fetch("https://website-urld.onrender.com/deleteGame", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ gameId })
+            });
+            const result = await res.json();
+            if (result.success) {
+            alert("Oyun silindi.");
+            loadAllGames();           
+            } else {
+            alert("Silinemedi: " + (result.message||""));
+            }
+            } catch (err) {
+            console.error(err);
+            alert("Sunucu hatası, silme başarısız.");
+            }
+            });
 
         </script>
 </body>
